@@ -164,8 +164,9 @@ def main():
     Инициализация максимального количесотва соседей и минимальной ошибки
     для реализации алгоритма Leave one out
     '''
-    k_max = 10
+    k_max = 30
     min_error = math.inf
+    error = []
     
     # Инициализация цикла для алгоритма Leave one out
     for i in range(k_max):
@@ -192,6 +193,8 @@ def main():
             # прибавление квадрата ошибки 
             error_rate += pow(a_LOO - row[n_label], 2)
         
+        error.append(math.sqrt(error_rate))
+        
         '''
         Если сумма ошибок меньше минимальной, то текущее количество ближайших
         соседей оптимально
@@ -199,6 +202,14 @@ def main():
         if (min_error > error_rate):
             k_opt = k_LOO
             min_error = error_rate
+    
+    # Построение графика выбора аптимального значения k
+    plt.plot(range(1, 31), error)
+    plt.scatter(k_opt, math.sqrt(min_error))
+    plt.xlabel('k')
+    plt.ylabel('error')
+    plt.title("LOO plot")
+    plt.show()
     
     # Вывод в консоль оптимального значения k
     print('\noptimal k after LOO: ', k_opt)
